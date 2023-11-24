@@ -10,10 +10,10 @@ export async function getLabels(setLabels) {
   }
 }
 
-export async function getImages(setImages) {
+export async function getImages(setImages, page) {
   try {
     const images = data.Images;
-    setImages(images);
+    setImages(prev => [...prev, ...images]);
   } catch (err) {
     console.log("[ERROR][user.service:getImages]: ", err);
   }

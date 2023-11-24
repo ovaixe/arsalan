@@ -10,10 +10,6 @@ export default function SignUp() {
   const [signUpButton, setSignUpButton] = useState(false);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    console.log("is admin >>>", isAdmin);
-  }, [isAdmin]);
-
   const handleInput = (e) => {
     if (e.target.id === "username") {
       setUserName(e.target.value);

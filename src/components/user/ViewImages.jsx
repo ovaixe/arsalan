@@ -4,6 +4,7 @@ import { getLabels, getImages } from "../../services/user.service";
 
 export default function ViewImages() {
   const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
   const [filteredImages, setFilteredImages] = useState([]);
   const [labels, setLabels] = useState([]);
   const [selectedLabels, setSelectedLabels] = useState([]);
@@ -52,6 +53,14 @@ export default function ViewImages() {
     setShowLabels((prev) => !prev);
   };
 
+  const handleScroll = (e) => {
+    const { offsetHeight, scrollTop, scrollHeight } = e.target;
+    if (offsetHeight + scrollTop >= scrollHeight) {
+      getImages(setImages, page+1);
+      setPage(prev => prev+1);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center space-y-20">
       <div className="flex flex-row items-center space-x-3">
@@ -77,7 +86,10 @@ export default function ViewImages() {
                   onChange={handleOptionToggle}
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-2"
                 />
-                <label htmlFor={index} className="ms-2 text-sm font-medium whitespace-nowrap">
+                <label
+                  htmlFor={index}
+                  className="ms-2 text-sm font-medium whitespace-nowrap"
+                >
                   {label}
                 </label>
               </div>
@@ -95,12 +107,17 @@ export default function ViewImages() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-smooth overflow-y-scroll">
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 h-new scroll-smooth overflow-y-scroll"
+        onScroll={handleScroll}
+      >
         {filterButton
           ? filteredImages.map((img, index) => (
               <Image key={index} image={img} labels={labels} />
             ))
-          : images.map((img, index) => <Image key={index} id={index} image={img} labels={labels} />)}
+          : images.map((img, index) => (
+              <Image key={index} id={index} image={img} labels={labels} />
+            ))}
       </div>
     </div>
   );

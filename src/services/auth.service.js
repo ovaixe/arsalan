@@ -1,5 +1,13 @@
 import axios from "axios";
 
+export async function validateUser() {
+  return true;
+}
+
+export async function validateAdmin() {
+  return false;
+}
+
 export async function login(data) {
   try {
     console.log("login >>>", data);
